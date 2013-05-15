@@ -7,7 +7,9 @@ public class PhysicsMovement : MonoBehaviour {
 	public float movementForce;
 	public float jumpForce;
 	public float jumpLength;
+	public float armLength;
 	bool jump;
+	bool canJump;
 	
 	void Start () {
 	
@@ -27,12 +29,20 @@ public class PhysicsMovement : MonoBehaviour {
 			
 		}
 		//print (character.velocity.y);
-		
+		Vector3 forward = character.transform.TransformDirection(Vector3.forward);
+		RaycastHit rayHit2;
+        if (Physics.Raycast(character.transform.position, forward,out rayHit2, armLength)) {
+			canJump = true;
+		}
+		else {
+			canJump = false;
+		}
 	}
 	
 	void OnCollisionEnter (Collision collider) {
 		//jump when you run into a wall
-		if (character.velocity.y > -0.000001f && !jump) {
+		//if (character.velocity.y > -0.000001f && !jump) {
+		if (canJump) {
 			jump = true;
 			//to prevent double jumps
 			Invoke("JumpDelay", jumpLength);
