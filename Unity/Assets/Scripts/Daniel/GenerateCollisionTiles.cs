@@ -28,13 +28,13 @@ public class GenerateCollisionTiles : MonoBehaviour
 	void AdjustPos ()
 	{
 		if (width % 2 == 0)
-			pos -= Vector3.forward * 0.5f;
-		else 
 			pos += Vector3.forward * 0.5f;
-		if (height % 2 == 0)
-			pos -= Vector3.right * 0.5f;
 		else 
+			pos -= Vector3.forward * 0.5f;
+		if (height % 2 == 0)
 			pos += Vector3.right * 0.5f;
+		else 
+			pos -= Vector3.right * 0.5f;
 		
 		pos += Vector3.up * renderer.bounds.size.y / 2;
 		
@@ -46,8 +46,9 @@ public class GenerateCollisionTiles : MonoBehaviour
 	{
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				GameObject t = (GameObject)Instantiate (collisionTile, pos, Quaternion.identity);
+				GameObject t = (GameObject)Instantiate (collisionTile, pos + Vector3.right * i + Vector3.forward * j, Quaternion.identity);
 				t.transform.parent = gameObject.transform;
+				t.layer = 9;
 				t.name = ((i+1) + (j) * width).ToString();
 				//pos + Vector3.right * i + Vector3.forward * j
 			}
